@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       cards: {
@@ -14,7 +14,7 @@ export interface Database {
           id: number
           image: string | null
           meaning: string | null
-          module_id: number
+          stack_id: number
           translate: string | null
           use_cases: string[] | null
           word: string
@@ -23,7 +23,7 @@ export interface Database {
           id?: number
           image?: string | null
           meaning?: string | null
-          module_id: number
+          stack_id: number
           translate?: string | null
           use_cases?: string[] | null
           word: string
@@ -32,22 +32,57 @@ export interface Database {
           id?: number
           image?: string | null
           meaning?: string | null
-          module_id?: number
+          stack_id?: number
           translate?: string | null
           use_cases?: string[] | null
           word?: string
         }
         Relationships: [
           {
-            foreignKeyName: "cards_module_id_fkey"
-            columns: ["module_id"]
+            foreignKeyName: "cards_stack_id_fkey"
+            columns: ["stack_id"]
             isOneToOne: false
-            referencedRelation: "modules"
+            referencedRelation: "stacks"
             referencedColumns: ["id"]
           }
         ]
       }
-      modules: {
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+          username: string
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string
+          username: string
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          username?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      stacks: {
         Row: {
           created_at: string
           description: string | null
@@ -71,7 +106,7 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "modules_user_id_fkey"
+            foreignKeyName: "stacks_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
